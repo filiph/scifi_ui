@@ -21,7 +21,7 @@ class AnimatedBorderContainer extends StatefulWidget {
     this.borderColor = const Color(0xFFFF000000),
     this.padding = EdgeInsets.zero,
     this.delay = 0,
-    this.duration = 500,
+    this.duration = 1000,
     @required this.child,
   })
       : super(key: key);

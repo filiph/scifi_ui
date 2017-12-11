@@ -31,6 +31,8 @@ class Glitch extends StatefulWidget {
 }
 
 class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
+  static const int defaultDuration = 400;
+
   AnimationController animation;
 
   bool _distort = false;
@@ -54,7 +56,7 @@ class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
     Widget result = widget.child;
 
     if (widget.useFlicker && _hide) {
-      result = new Opacity(opacity: 0.5, child: result);
+      result = new Opacity(opacity: 0.6, child: result);
     }
 
     final transform = !widget.useRotation
@@ -64,7 +66,8 @@ class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
             .multiplied(new Matrix4.rotationY(_rotation / 4));
 
     if (widget.useDistortion && _distort) {
-      transform.multiply(new Matrix4.skewX(-0.2));
+      transform.multiply(new Matrix4.skewX(-0.1));
+      transform.multiply(new Matrix4.translationValues(5.0, 0.0, 0.0));
     }
 
     result = new Transform(
@@ -89,7 +92,7 @@ class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     animation = new AnimationController(
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: defaultDuration),
       vsync: this,
     );
     animation.addListener(_animationTick);
@@ -110,6 +113,8 @@ class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
 
       return;
     }
+    // Which fraction of the complete [duration] to use for distortion
+    // and flicker.
     const fraction = 2;
     setState(() {
       // on - off - on - on - off - on

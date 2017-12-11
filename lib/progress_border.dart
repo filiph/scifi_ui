@@ -45,22 +45,19 @@ class ProgressBorder extends Decoration {
   @override
   ProgressBorder lerpFrom(Decoration a, double t) {
     if (a == null) return scale(t);
-    if (a is ProgressBorder)
-      return ProgressBorder.lerp(a, this, t);
+    if (a is ProgressBorder) return ProgressBorder.lerp(a, this, t);
     return super.lerpFrom(a, t);
   }
 
   @override
   ProgressBorder lerpTo(Decoration b, double t) {
     if (b == null) return scale(1.0 - t);
-    if (b is ProgressBorder)
-      return ProgressBorder.lerp(this, b, t);
+    if (b is ProgressBorder) return ProgressBorder.lerp(this, b, t);
     return super.lerpTo(b, t);
   }
 
   /// Linearly interpolate between two box decorations.
-  static ProgressBorder lerp(
-      ProgressBorder a, ProgressBorder b, double t) {
+  static ProgressBorder lerp(ProgressBorder a, ProgressBorder b, double t) {
     if (a == null && b == null) return null;
     if (a == null) return b.scale(t);
     if (b == null) return a.scale(1.0 - t);
@@ -137,9 +134,10 @@ class _ProgressBorderPainter extends BoxPainter {
       : assert(_decoration != null),
         _foregroundPaint = new Paint()
           ..color = _decoration.color
-          ..style = PaintingStyle.stroke,
-        _backgroundPaint =
-            _decoration.backgroundColor == null ? null : (new Paint()
+          ..style = PaintingStyle.fill,
+        _backgroundPaint = _decoration.backgroundColor == null
+            ? null
+            : (new Paint()
               ..color = _decoration.backgroundColor
               ..style = PaintingStyle.fill),
         super(onChanged);
@@ -149,6 +147,8 @@ class _ProgressBorderPainter extends BoxPainter {
   final Paint _foregroundPaint;
 
   final Paint _backgroundPaint;
+
+  static const int defaultLineWidth = 2;
 
   void _paintBox(Canvas canvas, Rect rect, TextDirection textDirection) {
     assert(_decoration.progress >= 0.0 && _decoration.progress <= 1.0);
@@ -160,19 +160,38 @@ class _ProgressBorderPainter extends BoxPainter {
       canvas.drawRect(rect, _foregroundPaint);
       return;
     }
-    _drawLineProgress(rect.topLeft, rect.topRight, _decoration.progress * 2,
-        canvas, _foregroundPaint);
-    _drawLineProgress(rect.bottomRight, rect.bottomLeft, _decoration.progress * 2,
-        canvas, _foregroundPaint);
-    _drawLineProgress(rect.topRight, rect.bottomRight,
-        _decoration.progress * 2 - 1, canvas, _foregroundPaint);
-    _drawLineProgress(rect.bottomLeft, rect.topLeft,
-        _decoration.progress * 2 - 1, canvas, _foregroundPaint);
+    final translateToFillWidth = defaultLineWidth - 1.0;
+    _drawLineProgress(
+        rect.topLeft,
+        rect.topRight.translate(0.0, translateToFillWidth),
+        _decoration.progress * 2,
+        canvas,
+        _foregroundPaint);
+    _drawLineProgress(
+        rect.bottomRight,
+        rect.bottomLeft.translate(0.0, -translateToFillWidth),
+        _decoration.progress * 2,
+        canvas,
+        _foregroundPaint);
+    _drawLineProgress(
+        rect.topRight,
+        rect.bottomRight.translate(-translateToFillWidth, 0.0),
+        _decoration.progress * 2 - 1,
+        canvas,
+        _foregroundPaint);
+    _drawLineProgress(
+        rect.bottomLeft,
+        rect.topLeft.translate(translateToFillWidth, 0.0),
+        _decoration.progress * 2 - 1,
+        canvas,
+        _foregroundPaint);
   }
 
   static void _drawLineProgress(
       Offset p1, Offset p2, double factor, Canvas canvas, Paint paint) {
-    canvas.drawLine(p1, _lerpOffset(p1, p2, factor.clamp(0.0, 1.0)), paint);
+    canvas.drawRect(
+        new Rect.fromPoints(p1, _lerpOffset(p1, p2, factor.clamp(0.0, 1.0))),
+        paint);
   }
 
   static Offset _lerpOffset(Offset p1, Offset p2, double factor) {

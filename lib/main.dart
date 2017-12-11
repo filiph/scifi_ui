@@ -1,12 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:scifi_ui/animated_border_container.dart';
 import 'package:scifi_ui/glitch.dart';
 import 'package:scifi_ui/glitch_text.dart';
 import 'package:scifi_ui/minimal_bar_chart.dart';
-import 'package:scifi_ui/progress_border.dart';
 import 'package:scifi_ui/text_style.dart';
 
 void main() => runApp(new MyApp());
@@ -48,19 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static final _random = new Random();
 
-  bool _shown = false;
-
   @override
   Widget build(BuildContext context) {
-//    final _widget =
-//        !_shown ? null : new Glitch(child: _sciFiButton('OK Computer'));
-//    final _widget = !_shown
-//        ? null
-//        : _sciFiContainer(new Glitch(
-//      useDistortion: false,
-//        useFlicker: false,
-//        child: new Text("Hello there"),));
-
     return new Scaffold(
       backgroundColor: Colors.white,
       body: new Center(
@@ -70,36 +57,12 @@ class _MyHomePageState extends State<MyHomePage> {
             new Expanded(
               child: new ListView.builder(
                 itemBuilder: _itemBuilder,
-                itemCount: 100,
               ),
             ),
-//            _widget ??
-//                new Padding(
-//                    padding: new EdgeInsets.all(24.0),
-//                    child: new GlitchText(
-//                        "Please click the button below to start.")),
           ],
         ),
       ),
     );
-  }
-
-  Widget _card() {
-    return new Card(
-      child: new Container(
-        child: new Text(
-          "Lorem ipsum",
-          style: Theme.of(context).textTheme.display2,
-        ),
-        padding: new EdgeInsets.all(10.0),
-      ),
-    );
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      _shown = !_shown;
-    });
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
@@ -218,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
             heightFactor: 9.0,
             child: new GlitchText(
               ":: LAUNCH IMMINENT ::",
-              delay: _randomDelay() ~/ 4,
+              delay: _randomDelay() ~/ 2,
               style: textStyleBold,
             ))));
   }
@@ -246,6 +209,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   static int _randomDelay() {
-    return 300 + _random.nextInt(1000);
+    return 300 + _random.nextInt(600);
   }
 }
