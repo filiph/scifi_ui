@@ -23,8 +23,7 @@ class Glitch extends StatefulWidget {
     this.useRotation: true,
     this.delay: 0,
     @required this.child,
-  })
-      : super(key: key);
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => new GlitchState();
@@ -50,7 +49,10 @@ class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
     if (_finished) return widget.child;
 
     if (animation.status == AnimationStatus.dismissed) {
-      return new Opacity(opacity: 0.0, child: widget.child,);
+      return new Opacity(
+        opacity: 0.0,
+        child: widget.child,
+      );
     }
 
     Widget result = widget.child;
@@ -139,7 +141,7 @@ class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
             _hide = true;
         }
       }
-      _rotation = Curves.easeIn.transform(1 - animation.value) * PI / 4;
+      _rotation = Curves.easeIn.transform(1 - animation.value) * pi / 4;
     });
   }
 
