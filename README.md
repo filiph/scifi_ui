@@ -1,8 +1,6 @@
 # scifi_ui
 
-A new Flutter project.
+An exploration of what cool-looking science-fiction UI elements are possible
+with Flutter.
 
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](http://flutter.io/).
+![A gif of the app in action](https://raw.githubusercontent.com/filiph/scifi_ui/master/scifi_ui.gif)
