@@ -18,15 +18,15 @@ class Glitch extends StatefulWidget {
 
   Glitch({
     Key key,
-    this.useDistortion: true,
-    this.useFlicker: true,
-    this.useRotation: true,
-    this.delay: 0,
+    this.useDistortion = true,
+    this.useFlicker = true,
+    this.useRotation = true,
+    this.delay = 0,
     @required this.child,
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => new GlitchState();
+  State<StatefulWidget> createState() => GlitchState();
 }
 
 class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
@@ -49,7 +49,7 @@ class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
     if (_finished) return widget.child;
 
     if (animation.status == AnimationStatus.dismissed) {
-      return new Opacity(
+      return Opacity(
         opacity: 0.0,
         child: widget.child,
       );
@@ -58,21 +58,21 @@ class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
     Widget result = widget.child;
 
     if (widget.useFlicker && _hide) {
-      result = new Opacity(opacity: 0.6, child: result);
+      result = Opacity(opacity: 0.6, child: result);
     }
 
     final transform = !widget.useRotation
-        ? new Matrix4.identity()
+        ? Matrix4.identity()
         : _perspective
-            .multiplied(new Matrix4.rotationX(_rotation))
-            .multiplied(new Matrix4.rotationY(_rotation / 4));
+            .multiplied(Matrix4.rotationX(_rotation))
+            .multiplied(Matrix4.rotationY(_rotation / 4));
 
     if (widget.useDistortion && _distort) {
-      transform.multiply(new Matrix4.skewX(-0.1));
-      transform.multiply(new Matrix4.translationValues(5.0, 0.0, 0.0));
+      transform.multiply(Matrix4.skewX(-0.1));
+      transform.multiply(Matrix4.translationValues(5.0, 0.0, 0.0));
     }
 
-    result = new Transform(
+    result = Transform(
       transform: transform,
       child: result,
     );
@@ -93,12 +93,12 @@ class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    animation = new AnimationController(
+    animation = AnimationController(
       duration: const Duration(milliseconds: defaultDuration),
       vsync: this,
     );
     animation.addListener(_animationTick);
-    new Timer(new Duration(milliseconds: widget.delay), () {
+    Timer(Duration(milliseconds: widget.delay), () {
       if (animation.status == AnimationStatus.completed) return;
       animation.forward();
     });
@@ -149,7 +149,7 @@ class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
   ///
   /// http://web.iitd.ac.in/~hegde/cad/lecture/L9_persproj.pdf
   static Matrix4 _pmat(int pv) {
-    return new Matrix4(
+    return Matrix4(
       1.0, 0.0, 0.0, 0.0, //
       0.0, 1.0, 0.0, 0.0, //
       0.0, 0.0, 1.0, pv * 0.0001, //
@@ -165,11 +165,11 @@ class _GlitchPathClipper extends CustomClipper<Path> {
 
   @override
   Path getClip(Size size) {
-    final path = new Path();
+    final path = Path();
     final invProgress = 1 - progress;
     const maxWidthClip = 0.3;
     const maxHeightClip = 0.4;
-    path.addRect(new Rect.fromLTWH(
+    path.addRect(Rect.fromLTWH(
       invProgress * maxWidthClip * size.width,
       invProgress * maxHeightClip * size.height,
       size.width - (invProgress * maxWidthClip * 2),

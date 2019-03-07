@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:scifi_ui/text_style.dart';
 
-final Random _random = new Random();
+final Random _random = Random();
 
 String interpolate(String from, String to, num progress) {
   assert(progress >= 0 && progress <= 1);
@@ -18,7 +18,7 @@ String interpolate(String from, String to, num progress) {
 
   int length = fromLength + ((toLength - fromLength) * progress).toInt();
 
-  StringBuffer buffer = new StringBuffer();
+  StringBuffer buffer = StringBuffer();
   for (int i = 0; i < length; i++) {
     int char;
     if (_random.nextDouble() > progress) {
@@ -40,15 +40,14 @@ class GlitchText extends StatefulWidget {
     Key key,
     this.delay = 0,
     this.style,
-  })
-      : super(key: key);
+  }) : super(key: key);
 
   final int delay;
 
   final TextStyle style;
 
   @override
-  GlitchTextState createState() => new GlitchTextState();
+  GlitchTextState createState() => GlitchTextState();
 }
 
 class GlitchTextState extends State<GlitchText>
@@ -61,7 +60,7 @@ class GlitchTextState extends State<GlitchText>
 
   @override
   Widget build(BuildContext context) {
-    final textWidget = new Text(
+    final textWidget = Text(
       _text,
       style: widget.style,
     );
@@ -78,17 +77,17 @@ class GlitchTextState extends State<GlitchText>
   @override
   void initState() {
     super.initState();
-    _initialText = new String.fromCharCodes(
-        new Iterable.generate(widget.data.length ~/ 2, (_) {
+    _initialText =
+        String.fromCharCodes(Iterable.generate(widget.data.length ~/ 2, (_) {
       if (_random.nextDouble() < 0.2) return 32 /* space */;
       return 65 + _random.nextInt(125 - 65);
     }));
-    animation = new AnimationController(
+    animation = AnimationController(
       duration: const Duration(milliseconds: 400),
       vsync: this,
     );
     animation.addListener(_animationTick);
-    new Timer(new Duration(milliseconds: widget.delay), () {
+    Timer(Duration(milliseconds: widget.delay), () {
       if (animation.status == AnimationStatus.completed) return;
       animation.forward();
     });

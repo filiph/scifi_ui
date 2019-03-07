@@ -16,8 +16,7 @@ class ProgressBorder extends Decoration {
     @required this.color,
     this.backgroundColor,
     @required this.progress,
-  })
-      : assert(progress >= 0.0 && progress <= 1.0);
+  }) : assert(progress >= 0.0 && progress <= 1.0);
 
   /// The color to fill in the background of the box.
   final Color color;
@@ -32,7 +31,7 @@ class ProgressBorder extends Decoration {
 
   /// Returns a new box decoration that is scaled by the given factor.
   ProgressBorder scale(double factor) {
-    return new ProgressBorder(
+    return ProgressBorder(
       color: Color.lerp(null, color, factor),
       backgroundColor: Color.lerp(null, backgroundColor, factor),
       progress: progress,
@@ -63,7 +62,7 @@ class ProgressBorder extends Decoration {
     if (b == null) return a.scale(1.0 - t);
     if (t == 0.0) return a;
     if (t == 1.0) return b;
-    return new ProgressBorder(
+    return ProgressBorder(
       color: Color.lerp(a.color, b.color, t),
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       progress: lerpDouble(a.progress, b.progress, t),
@@ -100,17 +99,16 @@ class ProgressBorder extends Decoration {
       ..defaultDiagnosticsTreeStyle = DiagnosticsTreeStyle.whitespace
       ..emptyBodyDescription = '<no decorations specified>';
 
-    properties.add(
-        new DiagnosticsProperty<Color>('color', color, defaultValue: null));
-    properties.add(new DiagnosticsProperty<Color>(
+    properties
+        .add(DiagnosticsProperty<Color>('color', color, defaultValue: null));
+    properties.add(DiagnosticsProperty<Color>(
         'backgroundColor', backgroundColor,
         defaultValue: null));
-    properties.add(new DiagnosticsProperty<double>('progress', progress,
+    properties.add(
+        DiagnosticsProperty<double>('progress', progress, defaultValue: null));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding,
         defaultValue: null));
-    properties.add(new DiagnosticsProperty<EdgeInsetsGeometry>(
-        'padding', padding,
-        defaultValue: null));
-    properties.add(new EnumProperty<BoxShape>('shape', shape,
+    properties.add(EnumProperty<BoxShape>('shape', shape,
         defaultValue: BoxShape.rectangle));
   }
 
@@ -124,7 +122,7 @@ class ProgressBorder extends Decoration {
 
   @override
   createBoxPainter([VoidCallback onChanged]) {
-    return new _ProgressBorderPainter(this, onChanged);
+    return _ProgressBorderPainter(this, onChanged);
   }
 }
 
@@ -132,12 +130,12 @@ class ProgressBorder extends Decoration {
 class _ProgressBorderPainter extends BoxPainter {
   _ProgressBorderPainter(this._decoration, VoidCallback onChanged)
       : assert(_decoration != null),
-        _foregroundPaint = new Paint()
+        _foregroundPaint = Paint()
           ..color = _decoration.color
           ..style = PaintingStyle.fill,
         _backgroundPaint = _decoration.backgroundColor == null
             ? null
-            : (new Paint()
+            : (Paint()
               ..color = _decoration.backgroundColor
               ..style = PaintingStyle.fill),
         super(onChanged);
@@ -190,13 +188,13 @@ class _ProgressBorderPainter extends BoxPainter {
   static void _drawLineProgress(
       Offset p1, Offset p2, double factor, Canvas canvas, Paint paint) {
     canvas.drawRect(
-        new Rect.fromPoints(p1, _lerpOffset(p1, p2, factor.clamp(0.0, 1.0))),
+        Rect.fromPoints(p1, _lerpOffset(p1, p2, factor.clamp(0.0, 1.0))),
         paint);
   }
 
   static Offset _lerpOffset(Offset p1, Offset p2, double factor) {
     assert(factor >= 0.0 && factor <= 1.0);
-    return new Offset(
+    return Offset(
         lerpDouble(p1.dx, p2.dx, factor), lerpDouble(p1.dy, p2.dy, factor));
   }
 

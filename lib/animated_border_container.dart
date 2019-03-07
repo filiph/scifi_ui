@@ -23,11 +23,10 @@ class AnimatedBorderContainer extends StatefulWidget {
     this.delay = 0,
     this.duration = 1000,
     @required this.child,
-  })
-      : super(key: key);
+  }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => new AnimatedBorderContainerState();
+  State<StatefulWidget> createState() => AnimatedBorderContainerState();
 }
 
 class AnimatedBorderContainerState extends State<AnimatedBorderContainer>
@@ -38,11 +37,10 @@ class AnimatedBorderContainerState extends State<AnimatedBorderContainer>
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    return Container(
       padding: widget.padding,
-      decoration: new ProgressBorder(
-          color: widget.borderColor,
-          progress: _progress),
+      decoration:
+          ProgressBorder(color: widget.borderColor, progress: _progress),
       child: widget.child,
     );
   }
@@ -57,12 +55,12 @@ class AnimatedBorderContainerState extends State<AnimatedBorderContainer>
   @override
   void initState() {
     super.initState();
-    animation = new AnimationController(
-      duration: new Duration(milliseconds: widget.duration),
+    animation = AnimationController(
+      duration: Duration(milliseconds: widget.duration),
       vsync: this,
     );
     animation.addListener(_animationTick);
-    new Timer(new Duration(milliseconds: widget.delay), () {
+    Timer(Duration(milliseconds: widget.delay), () {
       if (animation.status == AnimationStatus.completed) return;
       animation.forward();
     });

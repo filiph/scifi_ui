@@ -7,19 +7,19 @@ import 'package:scifi_ui/glitch_text.dart';
 import 'package:scifi_ui/minimal_bar_chart.dart';
 import 'package:scifi_ui/text_style.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Retro Sci-Fi',
-      theme: new ThemeData(
+      theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: 'Rubik',
         backgroundColor: Colors.white,
       ),
-      home: new MyHomePage(title: 'Retro Sci-Fi Demo'),
+      home: MyHomePage(title: 'Retro Sci-Fi Demo'),
 //      showPerformanceOverlay: true,
     );
   }
@@ -31,31 +31,31 @@ class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 // declare the text style
 class _MyHomePageState extends State<MyHomePage> {
   static final BoxDecoration _blackBorderDecoration =
-      new BoxDecoration(border: _blackBorder);
+      BoxDecoration(border: _blackBorder);
 
-  static final Border _blackBorder = new Border.all(
+  static final Border _blackBorder = Border.all(
     width: 1.0,
     color: const Color(0xFFFF000000),
   );
 
-  static final _random = new Random();
+  static final _random = Random();
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
-      body: new Center(
-        child: new Column(
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Expanded(
-              child: new ListView.builder(
+            Expanded(
+              child: ListView.builder(
                 itemBuilder: _itemBuilder,
               ),
             ),
@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _itemBuilder(BuildContext context, int index) {
     const versions = 6;
-    if (index == 0) return new Text("\n\n\n");
+    if (index == 0) return Text("\n\n\n");
     switch (index % versions) {
       case 0:
         return _itemBuilder0(context);
@@ -83,16 +83,16 @@ class _MyHomePageState extends State<MyHomePage> {
         return _itemBuilder5(context, index);
     }
 
-    throw new StateError("bad");
+    throw StateError("bad");
   }
 
   Widget _itemBuilder0(BuildContext context) {
     final lorem =
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
-    return _itemContainer(new Glitch(
+    return _itemContainer(Glitch(
       useRotation: false,
       delay: _randomDelay(),
-      child: new Text(
+      child: Text(
         lorem,
         style: textStyle,
       ),
@@ -100,14 +100,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _itemBuilder1(BuildContext context, int index) {
-    final row = new Row(children: <Widget>[
-      new Expanded(
-          child: new GlitchText(
+    final row = Row(children: <Widget>[
+      Expanded(
+          child: GlitchText(
         "VESSEL REV0${index}3-T",
         delay: 300,
         style: textStyleLargeBold,
       )),
-      new Glitch(
+      Glitch(
         delay: _randomDelay(),
         child: _sciFiButton("OK"),
       ),
@@ -116,10 +116,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _itemBuilder2(BuildContext context, int index) {
-    return _itemContainer(new Glitch(
+    return _itemContainer(Glitch(
       useRotation: false,
       delay: _randomDelay(),
-      child: new Image.asset(index == 2 || _random.nextBool()
+      child: Image.asset(index == 2 || _random.nextBool()
           ? 'assets/space-station.gif'
           : 'assets/P-valor.gif'),
     ));
@@ -128,35 +128,35 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _itemBuilder3(BuildContext context, int index) {
     final text =
         "Animation of the night sky showing the apparent retrograde motion of the planet Mars in August and September of 2003 in the constellation Aquarius. The time period depicted spans from June 15, 2003 to November 18, 2003 in 2-day increments where each day is at 00:00 UTC. All stars brighter than 5.0 magnitude are shown and labelled. ";
-    final image = new Image.asset(_random.nextBool()
+    final image = Image.asset(_random.nextBool()
         ? 'assets/mars-in-2013-negated.gif'
         : 'assets/fourier.gif');
 
-    final row = new Row(
+    final row = Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        new Flexible(
+        Flexible(
             flex: 1,
-            child: new AnimatedBorderContainer(
+            child: AnimatedBorderContainer(
                 duration: 1000,
                 delay: _randomDelay(),
-                padding: new EdgeInsets.all(5.0),
-                child: new Glitch(
+                padding: EdgeInsets.all(5.0),
+                child: Glitch(
                   delay: _randomDelay(),
                   useRotation: false,
                   useDistortion: false,
                   useFlicker: false,
                   child: image,
                 ))),
-        new Flexible(
+        Flexible(
           flex: 2,
-          child: new Padding(
+          child: Padding(
               padding: const EdgeInsets.only(left: 20.0),
-              child: new Glitch(
+              child: Glitch(
                 delay: _randomDelay(),
                 useDistortion: false,
                 useRotation: false,
-                child: new Text(
+                child: Text(
                   text,
                   maxLines: 5,
                   style: textStyle,
@@ -170,31 +170,31 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _itemBuilder4(BuildContext context, int index) {
-    return _itemContainer(new MinimalBarChart());
+    return _itemContainer(MinimalBarChart());
   }
 
   Widget _itemBuilder5(BuildContext context, int index) {
-    return _itemContainer(new AnimatedBorderContainer(
+    return _itemContainer(AnimatedBorderContainer(
         delay: _randomDelay(),
-        child: new Center(
+        child: Center(
             widthFactor: 16.0,
             heightFactor: 9.0,
-            child: new GlitchText(
+            child: GlitchText(
               ":: LAUNCH IMMINENT ::",
               delay: _randomDelay() ~/ 2,
               style: textStyleBold,
             ))));
   }
 
-  Container _itemContainer(Widget child) => new Container(
+  Container _itemContainer(Widget child) => Container(
       padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
       child: child);
 
   Widget _sciFiButton(String text) {
-    return new Container(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 4.0),
       decoration: _blackBorderDecoration,
-      child: new Text(
+      child: Text(
         text,
         style: textStyle,
       ),
@@ -202,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _sciFiContainer(Widget child) {
-    return new AnimatedBorderContainer(
+    return AnimatedBorderContainer(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
       child: child,
     );

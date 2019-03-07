@@ -15,11 +15,10 @@ class MinimalBarChart extends StatefulWidget {
     Key key,
     this.delay = 0,
     this.duration = 1000,
-  })
-      : super(key: key);
+  }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => new MinimalBarChartState();
+  State<StatefulWidget> createState() => MinimalBarChartState();
 }
 
 class MinimalBarChartState extends State<MinimalBarChart>
@@ -34,9 +33,9 @@ class MinimalBarChartState extends State<MinimalBarChart>
 
   @override
   Widget build(BuildContext context) {
-    return new CustomPaint(
-      size: new Size(200.0, 100.0),
-      painter: new BarChartPainter(values, _progress),
+    return CustomPaint(
+      size: Size(200.0, 100.0),
+      painter: BarChartPainter(values, _progress),
     );
   }
 
@@ -47,19 +46,19 @@ class MinimalBarChartState extends State<MinimalBarChart>
     super.dispose();
   }
 
-  static final _random = new Random();
+  static final _random = Random();
 
   @override
   void initState() {
     super.initState();
-    values = new List<int>.generate(
+    values = List<int>.generate(
         barCount, (index) => index * 5 + _random.nextInt(10));
-    animation = new AnimationController(
-      duration: new Duration(milliseconds: widget.duration),
+    animation = AnimationController(
+      duration: Duration(milliseconds: widget.duration),
       vsync: this,
     );
     animation.addListener(_animationTick);
-    new Timer(new Duration(milliseconds: widget.delay), () {
+    Timer(Duration(milliseconds: widget.delay), () {
       if (animation.status == AnimationStatus.completed) return;
       animation.forward();
     });
@@ -85,7 +84,7 @@ class BarChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = new Paint()..style = PaintingStyle.stroke;
+    final paint = Paint()..style = PaintingStyle.stroke;
     int count = values.length;
     int maxValue = values.fold(0, max);
     int minValue = values.fold(0, min);
@@ -102,7 +101,7 @@ class BarChartPainter extends CustomPainter {
       // canvas.drawLine(new Offset(leftOffset, topOffset),
       //    new Offset(leftOffset + barWidth, topOffset), paint);
       canvas.drawRect(
-          new Rect.fromLTRB(leftOffset, topOffset, leftOffset + barWidth,
+          Rect.fromLTRB(leftOffset, topOffset, leftOffset + barWidth,
               (chartPadding + height).toDouble()),
           paint);
     }
