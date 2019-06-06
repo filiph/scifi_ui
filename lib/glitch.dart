@@ -1,8 +1,8 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:scifi_ui/staggered_director.dart';
 import 'package:vector_math/vector_math_64.dart';
 
 class Glitch extends StatefulWidget {
@@ -14,14 +14,11 @@ class Glitch extends StatefulWidget {
 
   final bool useRotation;
 
-  final int delay;
-
   Glitch({
     Key key,
     this.useDistortion = true,
     this.useFlicker = true,
     this.useRotation = true,
-    this.delay = 0,
     @required this.child,
   }) : super(key: key);
 
@@ -98,7 +95,7 @@ class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
       vsync: this,
     );
     animation.addListener(_animationTick);
-    Timer(Duration(milliseconds: widget.delay), () {
+    StaggeredDirector.singleton.register(() {
       if (animation.status == AnimationStatus.completed) return;
       animation.forward();
     });
@@ -155,31 +152,5 @@ class GlitchState extends State<Glitch> with SingleTickerProviderStateMixin {
       0.0, 0.0, 1.0, pv * 0.0001, //
       0.0, 0.0, 0.0, 1.0,
     );
-  }
-}
-
-class _GlitchPathClipper extends CustomClipper<Path> {
-  final double progress;
-
-  _GlitchPathClipper(this.progress);
-
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-    final invProgress = 1 - progress;
-    const maxWidthClip = 0.3;
-    const maxHeightClip = 0.4;
-    path.addRect(Rect.fromLTWH(
-      invProgress * maxWidthClip * size.width,
-      invProgress * maxHeightClip * size.height,
-      size.width - (invProgress * maxWidthClip * 2),
-      size.height - (invProgress * maxHeightClip * 2),
-    ));
-    return path;
-  }
-
-  @override
-  bool shouldReclip(_GlitchPathClipper oldClipper) {
-    return oldClipper.progress != progress;
   }
 }

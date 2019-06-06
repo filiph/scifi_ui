@@ -1,8 +1,7 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
-import 'package:scifi_ui/text_style.dart';
+import 'package:scifi_ui/staggered_director.dart';
 
 final Random _random = Random();
 
@@ -38,11 +37,8 @@ class GlitchText extends StatefulWidget {
   GlitchText(
     this.data, {
     Key key,
-    this.delay = 0,
     this.style,
   }) : super(key: key);
-
-  final int delay;
 
   final TextStyle style;
 
@@ -87,7 +83,7 @@ class GlitchTextState extends State<GlitchText>
       vsync: this,
     );
     animation.addListener(_animationTick);
-    Timer(Duration(milliseconds: widget.delay), () {
+    StaggeredDirector.singleton.register(() {
       if (animation.status == AnimationStatus.completed) return;
       animation.forward();
     });

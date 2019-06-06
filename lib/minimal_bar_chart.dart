@@ -1,19 +1,14 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:scifi_ui/progress_border.dart';
+import 'package:scifi_ui/staggered_director.dart';
 
 class MinimalBarChart extends StatefulWidget {
-  /// How long to wait before starting the animation. Time is in milliseconds.
-  final int delay;
-
   final int duration;
 
   MinimalBarChart({
     Key key,
-    this.delay = 0,
     this.duration = 1000,
   }) : super(key: key);
 
@@ -58,7 +53,7 @@ class MinimalBarChartState extends State<MinimalBarChart>
       vsync: this,
     );
     animation.addListener(_animationTick);
-    Timer(Duration(milliseconds: widget.delay), () {
+    StaggeredDirector.singleton.register(() {
       if (animation.status == AnimationStatus.completed) return;
       animation.forward();
     });

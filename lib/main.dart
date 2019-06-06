@@ -20,7 +20,6 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white,
       ),
       home: MyHomePage(title: 'Retro Sci-Fi Demo'),
-//      showPerformanceOverlay: true,
     );
   }
 }
@@ -34,7 +33,6 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-// declare the text style
 class _MyHomePageState extends State<MyHomePage> {
   static final BoxDecoration _blackBorderDecoration =
       BoxDecoration(border: _blackBorder);
@@ -89,14 +87,15 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _itemBuilder0(BuildContext context) {
     final lorem =
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
-    return _itemContainer(Glitch(
-      useRotation: false,
-      delay: _randomDelay(),
-      child: Text(
-        lorem,
-        style: textStyle,
+    return _itemContainer(
+      Glitch(
+        useRotation: false,
+        child: Text(
+          lorem,
+          style: textStyle,
+        ),
       ),
-    ));
+    );
   }
 
   Widget _itemBuilder1(BuildContext context, int index) {
@@ -104,25 +103,22 @@ class _MyHomePageState extends State<MyHomePage> {
       Expanded(
           child: GlitchText(
         "VESSEL REV0${index}3-T",
-        delay: 300,
         style: textStyleLargeBold,
       )),
-      Glitch(
-        delay: _randomDelay(),
-        child: _sciFiButton("OK"),
-      ),
+      Glitch(child: _sciFiButton("OK")),
     ]);
     return _itemContainer(row);
   }
 
   Widget _itemBuilder2(BuildContext context, int index) {
-    return _itemContainer(Glitch(
-      useRotation: false,
-      delay: _randomDelay(),
-      child: Image.asset(index == 2 || _random.nextBool()
-          ? 'assets/space-station.gif'
-          : 'assets/P-valor.gif'),
-    ));
+    return _itemContainer(
+      Glitch(
+        useRotation: false,
+        child: Image.asset(index == 2 || _random.nextBool()
+            ? 'assets/space-station.gif'
+            : 'assets/P-valor.gif'),
+      ),
+    );
   }
 
   Widget _itemBuilder3(BuildContext context, int index) {
@@ -139,10 +135,8 @@ class _MyHomePageState extends State<MyHomePage> {
             flex: 1,
             child: AnimatedBorderContainer(
                 duration: 1000,
-                delay: _randomDelay(),
                 padding: EdgeInsets.all(5.0),
                 child: Glitch(
-                  delay: _randomDelay(),
                   useRotation: false,
                   useDistortion: false,
                   useFlicker: false,
@@ -153,7 +147,6 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: Glitch(
-                delay: _randomDelay(),
                 useDistortion: false,
                 useRotation: false,
                 child: Text(
@@ -174,16 +167,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _itemBuilder5(BuildContext context, int index) {
-    return _itemContainer(AnimatedBorderContainer(
-        delay: _randomDelay(),
+    return _itemContainer(
+      AnimatedBorderContainer(
         child: Center(
-            widthFactor: 16.0,
-            heightFactor: 9.0,
-            child: GlitchText(
-              ":: LAUNCH IMMINENT ::",
-              delay: _randomDelay() ~/ 2,
-              style: textStyleBold,
-            ))));
+          widthFactor: 16.0,
+          heightFactor: 9.0,
+          child: GlitchText(
+            ":: LAUNCH IMMINENT ::",
+            style: textStyleBold,
+          ),
+        ),
+      ),
+    );
   }
 
   Container _itemContainer(Widget child) => Container(
@@ -199,16 +194,5 @@ class _MyHomePageState extends State<MyHomePage> {
         style: textStyle,
       ),
     );
-  }
-
-  Widget _sciFiContainer(Widget child) {
-    return AnimatedBorderContainer(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-      child: child,
-    );
-  }
-
-  static int _randomDelay() {
-    return 300 + _random.nextInt(600);
   }
 }

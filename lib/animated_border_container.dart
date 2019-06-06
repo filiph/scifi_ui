@@ -1,8 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:scifi_ui/progress_border.dart';
+import 'package:scifi_ui/staggered_director.dart';
 
 class AnimatedBorderContainer extends StatefulWidget {
   final Widget child;
@@ -11,16 +10,12 @@ class AnimatedBorderContainer extends StatefulWidget {
 
   final EdgeInsetsGeometry padding;
 
-  /// How long to wait before starting the animation. Time is in milliseconds.
-  final int delay;
-
   final int duration;
 
   AnimatedBorderContainer({
     Key key,
     this.borderColor = const Color(0xFFFF000000),
     this.padding = EdgeInsets.zero,
-    this.delay = 0,
     this.duration = 1000,
     @required this.child,
   }) : super(key: key);
@@ -60,7 +55,7 @@ class AnimatedBorderContainerState extends State<AnimatedBorderContainer>
       vsync: this,
     );
     animation.addListener(_animationTick);
-    Timer(Duration(milliseconds: widget.delay), () {
+    StaggeredDirector.singleton.register(() {
       if (animation.status == AnimationStatus.completed) return;
       animation.forward();
     });
