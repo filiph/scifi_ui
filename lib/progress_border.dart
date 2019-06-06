@@ -1,8 +1,6 @@
-import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 class ProgressBorder extends Decoration {
@@ -133,31 +131,17 @@ class _ProgressBorderPainter extends BoxPainter {
         _foregroundPaint = Paint()
           ..color = _decoration.color
           ..style = PaintingStyle.fill,
-        _backgroundPaint = _decoration.backgroundColor == null
-            ? null
-            : (Paint()
-              ..color = _decoration.backgroundColor
-              ..style = PaintingStyle.fill),
         super(onChanged);
 
   final ProgressBorder _decoration;
 
   final Paint _foregroundPaint;
 
-  final Paint _backgroundPaint;
-
   static const int defaultLineWidth = 2;
 
   void _paintBox(Canvas canvas, Rect rect, TextDirection textDirection) {
     assert(_decoration.progress >= 0.0 && _decoration.progress <= 1.0);
     if (_decoration.progress == 0.0) return;
-    if (_decoration.progress == 1.0) {
-      if (_backgroundPaint != null) {
-        canvas.drawRect(rect, _backgroundPaint);
-      }
-      canvas.drawRect(rect, _foregroundPaint);
-      return;
-    }
     final translateToFillWidth = defaultLineWidth - 1.0;
     _drawLineProgress(
         rect.topLeft,
