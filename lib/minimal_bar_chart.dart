@@ -79,6 +79,7 @@ class BarChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (progress == 0) return;
     final paint = Paint()..style = PaintingStyle.stroke;
     int count = values.length;
     int maxValue = values.fold(0, max);
