@@ -14,11 +14,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Retro Sci-Fi',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'Rubik',
-        backgroundColor: Colors.white,
-      ),
       home: SciFiHomePage(),
     );
   }
@@ -42,18 +37,25 @@ class _SciFiHomePageState extends State<SciFiHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: ListView.builder(
-                itemBuilder: _itemBuilder,
+    return Theme(
+      data: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: 'Rubik',
+        backgroundColor: Colors.white,
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: ListView.builder(
+                  itemBuilder: _itemBuilder,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
