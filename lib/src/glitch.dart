@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:scifi_ui/staggered_director.dart';
+import 'package:scifi_ui/src/staggered_director.dart';
 import 'package:vector_math/vector_math_64.dart';
 
 class Glitch extends StatefulWidget {

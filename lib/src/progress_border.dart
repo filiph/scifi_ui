@@ -4,6 +4,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 class ProgressBorder extends Decoration {
+  /// The color to fill in the background of the box.
+  final Color color;
+
+  final Color backgroundColor;
+
+  final BoxShape shape = BoxShape.rectangle;
+
+  /// A value from `0.0` to `1.0` that defines how far along the border
+  /// animation is.
+  final double progress;
+
   /// Creates a box decoration.
   ///
   /// * [color] must not be null.
@@ -16,56 +27,19 @@ class ProgressBorder extends Decoration {
     @required this.progress,
   }) : assert(progress >= 0.0 && progress <= 1.0);
 
-  /// The color to fill in the background of the box.
-  final Color color;
-
-  final Color backgroundColor;
-
-  final BoxShape shape = BoxShape.rectangle;
-
-  /// A value from `0.0` to `1.0` that defines how far along the border
-  /// animation is.
-  final double progress;
-
-  /// Returns a new box decoration that is scaled by the given factor.
-  ProgressBorder scale(double factor) {
-    return ProgressBorder(
-      color: Color.lerp(null, color, factor),
-      backgroundColor: Color.lerp(null, backgroundColor, factor),
-      progress: progress,
+  @override
+  int get hashCode {
+    return hashValues(
+      color,
+      backgroundColor,
+      progress,
+      padding,
+      shape,
     );
   }
 
   @override
   bool get isComplex => false;
-
-  @override
-  ProgressBorder lerpFrom(Decoration a, double t) {
-    if (a == null) return scale(t);
-    if (a is ProgressBorder) return ProgressBorder.lerp(a, this, t);
-    return super.lerpFrom(a, t);
-  }
-
-  @override
-  ProgressBorder lerpTo(Decoration b, double t) {
-    if (b == null) return scale(1.0 - t);
-    if (b is ProgressBorder) return ProgressBorder.lerp(this, b, t);
-    return super.lerpTo(b, t);
-  }
-
-  /// Linearly interpolate between two box decorations.
-  static ProgressBorder lerp(ProgressBorder a, ProgressBorder b, double t) {
-    if (a == null && b == null) return null;
-    if (a == null) return b.scale(t);
-    if (b == null) return a.scale(1.0 - t);
-    if (t == 0.0) return a;
-    if (t == 1.0) return b;
-    return ProgressBorder(
-      color: Color.lerp(a.color, b.color, t),
-      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
-      progress: lerpDouble(a.progress, b.progress, t),
-    );
-  }
 
   @override
   bool operator ==(dynamic other) {
@@ -80,14 +54,8 @@ class ProgressBorder extends Decoration {
   }
 
   @override
-  int get hashCode {
-    return hashValues(
-      color,
-      backgroundColor,
-      progress,
-      padding,
-      shape,
-    );
+  createBoxPainter([VoidCallback onChanged]) {
+    return _ProgressBorderPainter(this, onChanged);
   }
 
   @override
@@ -119,13 +87,51 @@ class ProgressBorder extends Decoration {
   }
 
   @override
-  createBoxPainter([VoidCallback onChanged]) {
-    return _ProgressBorderPainter(this, onChanged);
+  ProgressBorder lerpFrom(Decoration a, double t) {
+    if (a == null) return scale(t);
+    if (a is ProgressBorder) return ProgressBorder.lerp(a, this, t);
+    return super.lerpFrom(a, t);
+  }
+
+  @override
+  ProgressBorder lerpTo(Decoration b, double t) {
+    if (b == null) return scale(1.0 - t);
+    if (b is ProgressBorder) return ProgressBorder.lerp(this, b, t);
+    return super.lerpTo(b, t);
+  }
+
+  /// Returns a new box decoration that is scaled by the given factor.
+  ProgressBorder scale(double factor) {
+    return ProgressBorder(
+      color: Color.lerp(null, color, factor),
+      backgroundColor: Color.lerp(null, backgroundColor, factor),
+      progress: progress,
+    );
+  }
+
+  /// Linearly interpolate between two box decorations.
+  static ProgressBorder lerp(ProgressBorder a, ProgressBorder b, double t) {
+    if (a == null && b == null) return null;
+    if (a == null) return b.scale(t);
+    if (b == null) return a.scale(1.0 - t);
+    if (t == 0.0) return a;
+    if (t == 1.0) return b;
+    return ProgressBorder(
+      color: Color.lerp(a.color, b.color, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      progress: lerpDouble(a.progress, b.progress, t),
+    );
   }
 }
 
 /// An object that paints a [ProgressBorder] into a canvas.
 class _ProgressBorderPainter extends BoxPainter {
+  static const int defaultLineWidth = 2;
+
+  final ProgressBorder _decoration;
+
+  final Paint _foregroundPaint;
+
   _ProgressBorderPainter(this._decoration, VoidCallback onChanged)
       : assert(_decoration != null),
         _foregroundPaint = Paint()
@@ -133,11 +139,15 @@ class _ProgressBorderPainter extends BoxPainter {
           ..style = PaintingStyle.fill,
         super(onChanged);
 
-  final ProgressBorder _decoration;
-
-  final Paint _foregroundPaint;
-
-  static const int defaultLineWidth = 2;
+  /// Paint the box decoration into the given location on the given canvas
+  @override
+  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
+    assert(configuration != null);
+    assert(configuration.size != null);
+    final Rect rect = offset & configuration.size;
+    final TextDirection textDirection = configuration.textDirection;
+    _paintBox(canvas, rect, textDirection);
+  }
 
   void _paintBox(Canvas canvas, Rect rect, TextDirection textDirection) {
     assert(_decoration.progress >= 0.0 && _decoration.progress <= 1.0);
@@ -180,15 +190,5 @@ class _ProgressBorderPainter extends BoxPainter {
     assert(factor >= 0.0 && factor <= 1.0);
     return Offset(
         lerpDouble(p1.dx, p2.dx, factor), lerpDouble(p1.dy, p2.dy, factor));
-  }
-
-  /// Paint the box decoration into the given location on the given canvas
-  @override
-  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    assert(configuration != null);
-    assert(configuration.size != null);
-    final Rect rect = offset & configuration.size;
-    final TextDirection textDirection = configuration.textDirection;
-    _paintBox(canvas, rect, textDirection);
   }
 }

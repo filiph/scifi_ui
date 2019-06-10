@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
-import 'package:scifi_ui/staggered_director.dart';
+import 'package:scifi_ui/src/staggered_director.dart';
 
 final Random _random = Random();
 

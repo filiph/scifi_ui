@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:scifi_ui/animated_border_container.dart';
-import 'package:scifi_ui/glitch.dart';
-import 'package:scifi_ui/glitch_text.dart';
-import 'package:scifi_ui/minimal_bar_chart.dart';
-import 'package:scifi_ui/text_style.dart';
+import 'package:scifi_ui/src/animated_border_container.dart';
+import 'package:scifi_ui/src/glitch.dart';
+import 'package:scifi_ui/src/glitch_text.dart';
+import 'package:scifi_ui/src/minimal_bar_chart.dart';
+import 'package:scifi_ui/src/text_style.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,21 +19,17 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Rubik',
         backgroundColor: Colors.white,
       ),
-      home: MyHomePage(title: 'Retro Sci-Fi Demo'),
+      home: SciFiHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  final String title;
-
-  MyHomePage({Key key, this.title}) : super(key: key);
-
+class SciFiHomePage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _SciFiHomePageState createState() => _SciFiHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _SciFiHomePageState extends State<SciFiHomePage> {
   static final BoxDecoration _blackBorderDecoration =
       BoxDecoration(border: _blackBorder);
 

@@ -9,27 +9,15 @@ class StaggeredDirector {
 
   Timer _timer;
 
+  List<void Function()> _callbacks = [];
+
   void dispose() {
     _timer?.cancel();
   }
 
-  List<void Function()> _callbacks = [];
-
   void register(void Function() callback) {
     _callbacks.add(callback);
     if (_timer == null) _scheduleNext();
-  }
-
-  void _scheduleNext() {
-    assert(_timer == null || !_timer.isActive);
-
-    // Clear the backlog if it's over a threshold.
-    while (_callbacks.length > maxWaiting) {
-      _callbacks.first();
-      _callbacks.removeAt(0);
-    }
-
-    _timer = Timer(delay, _handleNext);
   }
 
   void _handleNext() {
@@ -45,5 +33,17 @@ class StaggeredDirector {
     if (_callbacks.isNotEmpty) {
       _scheduleNext();
     }
+  }
+
+  void _scheduleNext() {
+    assert(_timer == null || !_timer.isActive);
+
+    // Clear the backlog if it's over a threshold.
+    while (_callbacks.length > maxWaiting) {
+      _callbacks.first();
+      _callbacks.removeAt(0);
+    }
+
+    _timer = Timer(delay, _handleNext);
   }
 }
