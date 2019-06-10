@@ -5,7 +5,7 @@ import 'package:scifi_ui/staggered_director.dart';
 
 final Random _random = Random();
 
-String interpolate(String from, String to, num progress) {
+String _interpolate(String from, String to, num progress) {
   assert(progress >= 0 && progress <= 1);
   if (progress <= 0) return from;
   if (progress >= 1) return to;
@@ -34,13 +34,13 @@ String interpolate(String from, String to, num progress) {
 class GlitchText extends StatefulWidget {
   final String data;
 
+  final TextStyle style;
+
   GlitchText(
     this.data, {
     Key key,
     this.style,
   }) : super(key: key);
-
-  final TextStyle style;
 
   @override
   GlitchTextState createState() => GlitchTextState();
@@ -48,11 +48,15 @@ class GlitchText extends StatefulWidget {
 
 class GlitchTextState extends State<GlitchText>
     with SingleTickerProviderStateMixin {
+  static const _steps = 20;
+
   AnimationController animation;
 
   String _text = "";
 
   String _initialText = "";
+
+  int _previous = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +83,7 @@ class GlitchTextState extends State<GlitchText>
       return 65 + _random.nextInt(125 - 65);
     }));
     animation = AnimationController(
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 600),
       vsync: this,
     );
     animation.addListener(_animationTick);
@@ -96,9 +100,15 @@ class GlitchTextState extends State<GlitchText>
       });
       return;
     }
-    final newText = interpolate(_initialText, widget.data, animation.value);
+    final current = (animation.value * _steps).floor();
+    if (current == _previous) {
+      // Skip if we've already done this step.
+      return;
+    }
+    final newText = _interpolate(_initialText, widget.data, animation.value);
     setState(() {
       _text = newText;
     });
+    _previous = current;
   }
 }
