@@ -5,7 +5,7 @@ class StaggeredDirector {
 
   static const Duration delay = Duration(milliseconds: 300);
 
-  static const maxWaiting = 10;
+  static const maxWaiting = 6;
 
   Timer _timer;
 
